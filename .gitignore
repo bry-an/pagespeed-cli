@@ -1,0 +1,4 @@
+node_modules
+/src/history/_data.json
+.env
+.eslintrc.js
