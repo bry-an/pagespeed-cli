@@ -229,8 +229,8 @@ const showHistory = (urls, history, options) => {
     });
     if (options.compare)   {
         let recordsToCompare = props(urls, history).map((item) => item ? item.records.map(({ data }) => ({ ...data })) : []);
-        const averages = recordsToCompare.map((groupedRecords) => groupedRecords.length ? ({ site: groupedRecords[0]?.id, average: averageOfPropPercent('speedIndexScore', groupedRecords) }) : {})
-        const { site: higherSite, average: higherAverage } = highestOfProp('average', averages);
+        const averages = recordsToCompare.map((groupedRecords) => groupedRecords.length ? ({ site: groupedRecords[0]?.id, average: averageOfPropPercent('speedIndexScore', groupedRecords), count: groupedRecords.length }) : {})
+        const { site: higherSite, average: higherAverage, count } = highestOfProp('average', averages);
 
         logSuccess('Comparision Results:')
         console.log('------------------')
@@ -243,11 +243,22 @@ const showHistory = (urls, history, options) => {
             console.log('----------')
             logSuccess('Site')
             logBold(averageEntry.site)
+            console.log();
             logSuccess('Average')
             logBold(averageEntry.average)
             console.log();
+            logSuccess('Number of Reports')
+            logBold(averageEntry.count)
+            console.log();
         })
     }
+}
+
+const showUsage = () => {
+        logSuccess('Get analytics information for at least one url', chalk.green('./index.js get-analytics [--url <url> --url <url> /*...*/ --url <urlN>]'));
+        logSuccess('Compare analytics results between several urls', chalk.green('./index.js get-analytics --compare [--url <url> --url <url> /*...*/ --url <urlN>]'));
+        logSuccess('Get history of at least one url', chalk.green('./index.js show-history [--url <url> --url <url> /*...*/ --url <urlN>]'));
+        logSuccess('Compare history of several results', chalk.green('./index.js show-history --compare [--url <url> --url <url> /*...*/ --url <urlN>]'));
 }
 
 // currently unused
@@ -259,6 +270,10 @@ const displayTasksList = (mainTasksList) => {
 
 
 const parseAndExecute = (args, history) => {
+    if (args.usage) {
+        showUsage();
+        return;
+    }
     // create show-history command
     let options = DEFAULT_OPTIONS;
     const argVector = args['_'];
