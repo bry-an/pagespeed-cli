@@ -36,8 +36,25 @@ Compare historical data for http://www.example.com and http://www.example2.com
 
 ```
 ./index.js show-history --compare --url http://www.example.com --url http://www.example2.com
+// compares average Speed Score of all recorded values for supplied urls
 ```
 
+View average historical data for http://www.example.com
+
+```
+./index.js show-history --compare --url http://www.example.com
+// returns average Speed Score for all recorded values
+```
+
+## API Key
+
+Since this CLI tool can make several requests per second to the Google PageSpeed API, you will need a Google API key to use this CLI. You can add it as a parameter:
+
+```
+./index.js show-history --url http://www.example.com --key 1234abcd
+```
+
+Or put your key in `.env.example` and rename it to `.env`.
 
 ## Under the hood
 
